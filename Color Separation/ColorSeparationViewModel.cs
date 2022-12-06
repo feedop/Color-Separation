@@ -262,7 +262,7 @@ namespace Color_Separation
             Separators.Add(new HSVSeparator());
             Separators.Add(new YCbCrSeparator());
             Separators.Add(new LabSeparator());
-            separator = Separators[0];
+            separator = Separators[1];
 
         }
         /// <summary>

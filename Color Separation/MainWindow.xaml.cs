@@ -1,7 +1,10 @@
 ﻿using Color_Separation.Separators;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -13,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Color_Separation
 {
@@ -21,37 +25,24 @@ namespace Color_Separation
     /// </summary>
     public partial class MainWindow : Window
     {
-        private ISeparator separator;
-        internal ISeparator Separator
-        {
-            get { return separator; }
-            set { separator = value; }
-        }
-
-        private BitmapImage source = new BitmapImage();
-        public BitmapImage Source
-        {
-            get { return source; }
-            set { source = value; }
-        }
-
-        public WriteableBitmap? Result1 { get; set; }
-        public WriteableBitmap? Result2 { get; set; }
-        public WriteableBitmap? Result3 { get; set; }
-
+        private ColorSeparationViewModel viewModel;
         public MainWindow()
         {
             InitializeComponent();
-
-            separator = new HSVSeparator();
-            DataContext = this;
+            viewModel = new ColorSeparationViewModel();
+            DataContext = viewModel;
         }
-        /// <summary>
-        /// Updates the result bitmaps
-        /// </summary>
-        private void Update()
+
+        private void OpenFile_Click(object sender, RoutedEventArgs e)
         {
 
+            OpenFileDialog op = new OpenFileDialog();
+            op.Title = "Select a picture";
+            op.Filter = "Image files|*.jpeg;*.jpg;*.png;*.gif;*.bmp";
+            if (op.ShowDialog() == true)
+            {
+                viewModel.SourceImage = new WriteableBitmap(new BitmapImage(new Uri(op.FileName)));
+            }
         }
     }
 }

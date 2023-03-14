@@ -1,4 +1,5 @@
 ﻿using Color_Separation.Separators;
+using MathNet.Numerics;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -23,7 +24,7 @@ namespace Color_Separation
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : System.Windows.Window
     {
         private ColorSeparationViewModel viewModel;
         public MainWindow()

@@ -18,11 +18,6 @@ namespace Color_Separation.Separators
             double g = ((pixel >> 8) & 0xff) / 255.0;
             double b = (pixel & 0xff) / 255.0;
 
-            if (r < 1 || g < 1 || b < 1)
-            {
-
-            }
-
             double cmax = Math.Max(r, Math.Max(g, b)); // maximum of r, g, b
             double cmin = Math.Min(r, Math.Min(g, b)); // minimum of r, g, b
             double diff = cmax - cmin; // diff of cmax and cmin.

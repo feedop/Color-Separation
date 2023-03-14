@@ -7,6 +7,7 @@ using System.Windows.Data;
 
 namespace Color_Separation
 {
+    // Overriding the default binding in case we want real-time updates
     public class BindingEx : Binding
     {
         public BindingEx()

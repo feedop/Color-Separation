@@ -270,7 +270,8 @@ namespace Color_Separation
         /// </summary>
         private unsafe void Update()
         {
-            if (SourceImage == null) return;
+            if (SourceImage == null)
+                return;
             Int32Rect rect = new Int32Rect(0, 0, SourceImage.PixelWidth, SourceImage.PixelHeight);
             try
             {
@@ -278,20 +279,35 @@ namespace Color_Separation
                 ResultImage1!.Lock();
                 ResultImage2!.Lock();
                 ResultImage3!.Lock();
-                int* sourceBackBuffer = (int*)SourceImage.BackBuffer;
                 int* result1BackBuffer = (int*)ResultImage1.BackBuffer;
                 int* result2BackBuffer = (int*)ResultImage2.BackBuffer;
                 int* result3BackBuffer = (int*)ResultImage3.BackBuffer;
 
-                Parallel.For(0, SourceImage.PixelWidth * SourceImage.PixelHeight, i =>
+                if (sourceImage!.BackBufferStride / SourceImage.PixelWidth == 4)
                 {
-                    (result1BackBuffer[i], result2BackBuffer[i], result3BackBuffer[i]) = Separator.Separate(sourceBackBuffer[i], ColorProfile);
-                });
+                    int* sourceBackBuffer = (int*)SourceImage.BackBuffer;
 
-                //for (int i = 0; i < SourceImage.PixelWidth * SourceImage.PixelHeight; i++)
+                    for (int i = 0; i < SourceImage.PixelWidth * SourceImage.PixelHeight; i++)
+                    {
+                        (result1BackBuffer[i], result2BackBuffer[i], result3BackBuffer[i]) = Separator.Separate(sourceBackBuffer[i], ColorProfile);
+                    }
+                }
+                else
+                {
+                    byte* sourceBackBuffer = (byte*)SourceImage.BackBuffer;
+
+                    for (int i = 0; i < SourceImage.PixelWidth * SourceImage.PixelHeight / 4; i++)
+                    {
+                        (result1BackBuffer[i], result2BackBuffer[i], result3BackBuffer[i]) = Separator.Separate((int)sourceBackBuffer[i] * 8, ColorProfile);
+                    }
+                }
+
+                //Parallel.For(0, SourceImage.PixelWidth * SourceImage.PixelHeight, i =>
                 //{
                 //    (result1BackBuffer[i], result2BackBuffer[i], result3BackBuffer[i]) = Separator.Separate(sourceBackBuffer[i], ColorProfile);
-                //}
+                //});
+
+
             }
             finally
             {

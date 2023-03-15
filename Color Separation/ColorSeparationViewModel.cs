@@ -287,27 +287,31 @@ namespace Color_Separation
                 {
                     int* sourceBackBuffer = (int*)SourceImage.BackBuffer;
 
-                    for (int i = 0; i < SourceImage.PixelWidth * SourceImage.PixelHeight; i++)
+                    //for (int i = 0; i < SourceImage.PixelWidth * SourceImage.PixelHeight; i++)
+                    //{
+                    //    (result1BackBuffer[i], result2BackBuffer[i], result3BackBuffer[i]) = Separator.Separate(sourceBackBuffer[i], ColorProfile);
+                    //}
+
+                    Parallel.For(0, SourceImage.PixelWidth * SourceImage.PixelHeight, i =>
                     {
                         (result1BackBuffer[i], result2BackBuffer[i], result3BackBuffer[i]) = Separator.Separate(sourceBackBuffer[i], ColorProfile);
-                    }
+                    });
+
                 }
                 else
                 {
                     byte* sourceBackBuffer = (byte*)SourceImage.BackBuffer;
 
-                    for (int i = 0; i < SourceImage.PixelWidth * SourceImage.PixelHeight / 4; i++)
+                    //for (int i = 0; i < SourceImage.PixelWidth * SourceImage.PixelHeight / 4; i++)
+                    //{
+                    //    (result1BackBuffer[i], result2BackBuffer[i], result3BackBuffer[i]) = Separator.Separate((int)sourceBackBuffer[i] * 4, ColorProfile);
+                    //}
+
+                    Parallel.For(0, SourceImage.PixelWidth * SourceImage.PixelHeight / 4, i =>
                     {
-                        (result1BackBuffer[i], result2BackBuffer[i], result3BackBuffer[i]) = Separator.Separate((int)sourceBackBuffer[i] * 8, ColorProfile);
-                    }
+                        (result1BackBuffer[i], result2BackBuffer[i], result3BackBuffer[i]) = Separator.Separate(4 * sourceBackBuffer[i] , ColorProfile);
+                    });
                 }
-
-                //Parallel.For(0, SourceImage.PixelWidth * SourceImage.PixelHeight, i =>
-                //{
-                //    (result1BackBuffer[i], result2BackBuffer[i], result3BackBuffer[i]) = Separator.Separate(sourceBackBuffer[i], ColorProfile);
-                //});
-
-
             }
             finally
             {

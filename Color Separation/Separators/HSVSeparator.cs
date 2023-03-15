@@ -45,8 +45,6 @@ namespace Color_Separation.Separators
             else
                 s = (diff / cmax);
 
-            
-
             // compute v
             double v = cmax;
 

@@ -4,7 +4,7 @@ Author: Filip Skrzeczkowski
 
 A WPF image processing app that separates separates the input into three channels.
 Supported color models:
- * RHB
+ * RGB
  * HSV
  * YCbCr
  * Lab
